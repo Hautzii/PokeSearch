@@ -8,6 +8,6 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
-  css: ['~/assets/css/main.css', '~/assets/css/autoComplete.css'],
+  css: ['~/assets/css/main.css', '~/assets/css/autoComplete.css', '~/assets/css/tungsten.css'],
   modules: ['@pinia/nuxt'],
 })
