@@ -1,0 +1,33 @@
+:root {
+    --dark: #10100e;
+    --light: #ffffe3;
+}
+
+* {
+    font-family: 'Tungsten', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    margin-top: 3rem;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    margin-top: 5rem;
+    height: 100vh;
+    width: 100vw;
+    text-transform: uppercase;
+}

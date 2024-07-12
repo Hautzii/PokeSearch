@@ -1,0 +1,35 @@
+import axios from 'axios'
+import type { Pokemon } from '../types/Pokemon'
+
+const BASE_API_URL = "https://pokeapi.co/api/v2/pokemon/"
+
+export async function fetchPokemonData(searchInput: string): Promise<Pokemon> {
+  const response = await axios.get(`${BASE_API_URL}/${searchInput}`)
+  
+  if (!response.data || !Array.isArray(response.data.stats)) {
+    throw new Error('Invalid response data structure');
+  }
+
+  const getStatValue = (statName: string) => {
+    const stat = response.data.stats.find((s: any) => s.stat.name === statName);
+    return stat ? stat.base_stat : 0;
+  };
+
+  return {
+    name: response.data.name,
+    id: response.data.id,
+    types: response.data.types?.map((type: any) => type?.type?.name) || [],
+    sprites: response.data.sprites,
+    abilities: response.data.abilities?.map((ability: any) => ability?.ability?.name) || [],
+    height: response.data.height,
+    weight: response.data.weight,
+    stats: {
+      hp: getStatValue('hp'),
+      attack: getStatValue('attack'),
+      defense: getStatValue('defense'),
+      special_attack: getStatValue('special-attack'),
+      special_defense: getStatValue('special-defense'),
+      speed: getStatValue('speed')
+    }
+  };
+}
