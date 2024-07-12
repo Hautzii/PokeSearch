@@ -17,7 +17,8 @@ export const usePokemonStore = defineStore('pokemon', {
         
         if (this.pokemon.sprites.front_default) {
           try {
-            this.prominentColor = await calculateDominantColor(this.pokemon.sprites.front_default) || '#ffffe3'
+            const defaultSprite = this.pokemon.sprites.front_default;
+            this.prominentColor = await calculateDominantColor(defaultSprite) || '#ffffe3'
           } catch (error) {
             console.error("Error calculating dominant color:", error)
             this.prominentColor = '#ffffe3'
@@ -32,6 +33,10 @@ export const usePokemonStore = defineStore('pokemon', {
     },
     setSearchInput(input: string) {
       this.searchInput = input
+    },
+    async setDominantColor(spriteUrl: string) {
+      const color = await calculateDominantColor(spriteUrl);
+      this.prominentColor = color;
     }
   }
 })

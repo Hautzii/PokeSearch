@@ -25,6 +25,7 @@ const pokemonStore = usePokemonStore();
 const { pokemon, prominentColor } = storeToRefs(pokemonStore);
 
 const fetchPokemon = async () => {
+  toggleSprite.value = false;
   pokemonStore.setSearchInput(searchInput.value);
   await pokemonStore.fetchPokemonData();
 };
@@ -33,6 +34,22 @@ const handleSuggestionClick = async (suggestion: string) => {
   selectSuggestion(suggestion);
   await fetchPokemon();
 };
+
+const toggleSprite = ref(false);
+
+const toggleSpriteHandler = async () => {
+  toggleSprite.value = !toggleSprite.value;
+  if (pokemon.value) {
+    const spriteUrl = toggleSprite.value ? pokemon.value.sprites.front_shiny : pokemon.value.sprites.front_default;
+    await pokemonStore.setDominantColor(spriteUrl);
+  }
+};
+
+const currentSprite = computed(() => {
+  return pokemon.value 
+    ? (toggleSprite.value ? pokemon.value.sprites.front_shiny : pokemon.value.sprites.front_default)
+    : '';
+});
 
 onMounted(() => {
   const removeListener = onMakeApiCall(fetchPokemon);
@@ -51,6 +68,7 @@ onMounted(() => {
           type="text"
           autofocus
           autocomplete="off"
+          spellcheck="false"
           @input="updateAutocompleteSuggestions"
         />
         <ul
@@ -88,7 +106,8 @@ onMounted(() => {
       </div>
       <div class="main-container">
         <img
-          :src="pokemon.sprites.front_default"
+          @click="toggleSpriteHandler"
+          :src="currentSprite"
           :alt="pokemon.name"
           class="sprite"
           :style="{ backgroundColor: prominentColor }"
@@ -234,5 +253,10 @@ button {
   margin: 0;
   padding: 0;
   border-radius: 1rem;
+  padding: 1rem;
+}
+
+.sprite:hover {
+  cursor: pointer;
 }
 </style>

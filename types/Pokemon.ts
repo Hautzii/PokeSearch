@@ -16,6 +16,6 @@ export interface Pokemon {
     }
     sprites: {
         front_default: string
-        // front_shiny: string
+        front_shiny: string
     }
 }
