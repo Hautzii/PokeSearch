@@ -1,5 +1,5 @@
 .highlight {
-    background-color: orangered;
+    background-color: #dd2313;
     font-weight: bold;
   }
   
@@ -20,7 +20,7 @@
   }
   
   .autocomplete-list li.selected {
-    background-color: orangered;
+    background-color: #dd2313;
   }
 
   .autocomplete-list li:first-child {

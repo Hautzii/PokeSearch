@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { fetchPokemonData as apiFetchPokemonData } from "../services/api";
 import type { Pokemon } from "../types/Pokemon";
+import tinycolor from "tinycolor2";
 
 export const fetchPokemonData = async (input: string) => {
   const pokemon = ref<Pokemon | null>(null);
@@ -8,7 +9,7 @@ export const fetchPokemonData = async (input: string) => {
 
   try {
     pokemon.value = await apiFetchPokemonData(input);
-    
+
     // Calculate dominant color from the sprite
     if (pokemon.value.sprites.front_default) {
       try {
@@ -89,7 +90,7 @@ export function calculateDominantColor(imageUrl: string): Promise<string> {
     img.src = imageUrl;
   });
 }
-  
+
 function getLuminance(color: string): number {
   let r: number, g: number, b: number;
 
@@ -104,9 +105,9 @@ function getLuminance(color: string): number {
   } else {
     // Parse Hex format
     const hex = color.charAt(0) === '#' ? color.slice(1) : color;
-    r = parseInt(hex.substr(0,2), 16);
-    g = parseInt(hex.substr(2,2), 16);
-    b = parseInt(hex.substr(4,2), 16);
+    r = parseInt(hex.substr(0, 2), 16);
+    g = parseInt(hex.substr(2, 2), 16);
+    b = parseInt(hex.substr(4, 2), 16);
   }
 
   // Normalize RGB values
@@ -115,7 +116,7 @@ function getLuminance(color: string): number {
   b /= 255;
 
   // Calculate luminance
-  const luminance = 
+  const luminance =
     0.2126 * (r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)) +
     0.7152 * (g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)) +
     0.0722 * (b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4));
@@ -125,43 +126,68 @@ function getLuminance(color: string): number {
 
 export function textColor(prominentColor: string): string {
   const bgLuminance = getLuminance(prominentColor);
-  
+
   const threshold = 0.9;
 
   // For debugging
-  console.log(`Color: ${prominentColor}, Luminance: ${bgLuminance}, Threshold: ${threshold}`);
+  // console.log(`Color: ${prominentColor}, Luminance: ${bgLuminance}, Threshold: ${threshold}`);
 
   // Return white text if the background luminance is below the threshold
-  return bgLuminance < threshold ? '#ffffff' : '#10100e';
+  return bgLuminance < threshold ? '#ffffe3' : '#10100e';
 }
-  
-  // format the types and abilities
-  export function formatTypes(types: any) {
-    return types.join(" / ");
-  }
-  
-  export function formatAbilities(abilities: any) {
-    return abilities.map((ability: string) => ability.replace(/-/g, " ")).join(" / ");
-  }
-  
 
-  export function formatHeight(height: any) {
-    if (height < 10) {
-      return `0.${height}m`;
-    } else {
-      return `${height}m`;
-  }
-  }
+// format the types and abilities
+export function formatTypes(types: any) {
+  return types.join(" / ");
+}
 
-  export function formatWeight(weight: any) {
-    if (weight < 10) {
-      return `0.${weight}kg`;
-    } else {
-      return `${weight}kg`;
-    }
-  }
+export function formatAbilities(abilities: any) {
+  return abilities.map((ability: string) => ability.replace(/-/g, " ")).join(" / ");
+}
 
-  export function formatBaseExperience(baseExperience: any) {
-    return `${baseExperience}xp`;
-  }
 
+export function formatHeight(height: any) {
+  if (height < 10) {
+    return `0.${height}m`;
+  } else {
+    return `${height}m`;
+  }
+}
+
+export function formatWeight(weight: any) {
+  if (weight < 10) {
+    return `0.${weight}kg`;
+  } else {
+    return `${weight}kg`;
+  }
+}
+
+export function formatStatName(key: string) {
+  return key.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+}
+
+export function getGradient(color: string) {
+  const tc = tinycolor(color);
+  const darkerColor = tc.darken(10).toString();
+  return `linear-gradient(to right, ${darkerColor}, ${color})`;
+}
+
+export const toggleSprite = ref(false);
+
+export const toggleSpriteHandler = async (pokemon: any, pokemonStore: any) => {
+  toggleSprite.value = !toggleSprite.value;
+  if (pokemon) {
+    const spriteUrl = toggleSprite.value
+      ? pokemon.sprites.front_shiny
+      : pokemon.sprites.front_default;
+    await pokemonStore.setDominantColor(spriteUrl);
+  }
+};
+
+export const getCurrentSprite = (pokemon: any) => {
+  return pokemon
+    ? toggleSprite.value
+      ? pokemon.sprites.front_shiny
+      : pokemon.sprites.front_default
+    : "";
+};

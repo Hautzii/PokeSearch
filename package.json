@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
+    "@types/tinycolor2": "^1.4.6",
     "awesomplete": "^1.1.5",
     "axios": "^1.7.2",
     "colorthief": "^2.4.0",
+    "graphql": "^16.9.0",
+    "graphql-request": "^7.1.0",
     "nuxt": "^3.12.3",
     "pinia": "^2.1.7",
+    "tinycolor2": "^1.6.0",
     "vue": "latest"
   },
   "devDependencies": {

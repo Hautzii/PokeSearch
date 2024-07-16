@@ -63,6 +63,7 @@ export function useAutocomplete() {
         if (selectedIndex.value !== -1) {
           selectSuggestion(autocompleteSuggestions.value[selectedIndex.value]);
         }
+        autocompleteSuggestions.value = [];
         // Emit an event to signal that the API call should be made
         window.dispatchEvent(new CustomEvent('makeApiCall'));
         break;
