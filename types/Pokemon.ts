@@ -5,6 +5,7 @@ export interface Pokemon {
     height: number
     weight: number
     abilities: string[]
+    tooltip: string
     stats: {
         hp: number
         attack: number

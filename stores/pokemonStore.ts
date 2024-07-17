@@ -13,7 +13,9 @@ export const usePokemonStore = defineStore('pokemon', {
   actions: {
     async fetchPokemonData() {
       try {
-        this.pokemon = await fetchPokemonData(this.searchInput)
+        // Convert searchInput to lowercase before making the API call
+        const lowercaseInput = this.searchInput.toLowerCase()
+        this.pokemon = await fetchPokemonData(lowercaseInput)
         
         if (this.pokemon.sprites.front_default) {
           try {

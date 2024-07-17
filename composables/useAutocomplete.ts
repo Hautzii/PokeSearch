@@ -30,10 +30,17 @@ export function useAutocomplete() {
     selectedIndex.value = -1; // Reset selected index when suggestions change
   };
 
+  const hideKeyboard = () => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
   const selectSuggestion = (suggestion: string) => {
     searchInput.value = suggestion;
     autocompleteSuggestions.value = [];
     selectedIndex.value = -1;
+    hideKeyboard();
   };
 
   const highlightMatch = (text: string, query: string) => {
@@ -63,7 +70,7 @@ export function useAutocomplete() {
         if (selectedIndex.value !== -1) {
           selectSuggestion(autocompleteSuggestions.value[selectedIndex.value]);
         }
-        autocompleteSuggestions.value = [];
+        hideKeyboard();
         // Emit an event to signal that the API call should be made
         window.dispatchEvent(new CustomEvent('makeApiCall'));
         break;
@@ -91,6 +98,7 @@ export function useAutocomplete() {
     onMakeApiCall,
     updateAutocompleteSuggestions,
     selectSuggestion,
-    highlightMatch
+    highlightMatch,
+    hideKeyboard
   };
 }

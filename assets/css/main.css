@@ -7,11 +7,13 @@
     font-family: 'Tungsten', sans-serif;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background-color: var(--dark);
     color: var(--light);
+    overflow: hidden;
 }
 
 header {
