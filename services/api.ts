@@ -34,8 +34,6 @@ export async function fetchPokemonData(searchInput: string): Promise<Pokemon> {
     sprites: response.data.sprites,
     abilities: response.data.abilities?.map((ability: any) => ability?.ability?.name) || [],
     tooltip: abilityEffects.join('\n'),
-    height: response.data.height,
-    weight: response.data.weight,
     stats: {
       hp: getStatValue('hp'),
       attack: getStatValue('attack'),

@@ -5,9 +5,6 @@ import { useAbilityStore } from "../stores/abilityStore";
 import { storeToRefs } from "pinia";
 import {
   formatTypes,
-  formatAbilities,
-  formatHeight,
-  formatWeight,
   textColor,
   formatStatName,
   getGradient,
@@ -143,11 +140,6 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <!-- <div class="body-container" :style="{ color: textColor(prominentColor), backgroundColor: prominentColor }">
-        <p>
-          {{ formatHeight(pokemon.height) }} / {{ formatWeight(pokemon.weight) }}
-        </p>
-      </div> -->
         <div class="stats-container">
         <div v-for="(value, key) in pokemon.stats" :key="key" class="stat-row">
           <span class="stat-name">{{ formatStatName(key) }}:</span>
